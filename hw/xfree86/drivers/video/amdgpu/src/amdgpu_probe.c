@@ -114,7 +114,7 @@ static int amdgpu_kernel_open_fd(ScrnInfoPtr pScrn,
 #define MAX_DRM_DEVICES 64
 	drmDevicePtr devices[MAX_DRM_DEVICES];
 	struct pci_device *dev;
-	const char *path;
+	const char *path = NULL;
 	int fd = -1, i, ret;
 
 	if (platform_dev)
@@ -134,9 +134,11 @@ static int amdgpu_kernel_open_fd(ScrnInfoPtr pScrn,
 		path = xf86_get_platform_device_attrib(platform_dev,
 						       ODEV_ATTRIB_PATH);
 
-		fd = open(path, O_RDWR | O_CLOEXEC);
-		if (fd != -1)
-			return fd;
+		if (path) {
+			fd = open(path, O_RDWR | O_CLOEXEC);
+			if (fd != -1)
+				return fd;
+		}
 	}
 
 	if (!amdgpu_kernel_mode_enabled(pScrn))
