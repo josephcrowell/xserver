@@ -37,7 +37,7 @@ symbol_test_args = []
 symbol_test_args += join_paths(xorg_build_root, 'libxorgserver.so')
 symbol_test_args += join_paths(xorg_build_root, 'dixmods', 'libshadow.so')
 symbol_test_args += join_paths(xorg_build_root, 'dixmods', 'libglx.so')
-symbol_test_args += join_paths(xorg_build_root, 'drivers', 'video-amdgpu', 'andgpu_drv.so')
+symbol_test_args += join_paths(xorg_build_root, 'drivers', 'video', 'amdgpu', 'amdgpu_drv.so')
 
 test('video-amdgpu symbol test',
     xorg_symbol_test,
