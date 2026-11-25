@@ -250,7 +250,7 @@ systemd_logind_vtenter(void)
         return; /* Already did vtenter */
 
     for (i = 0; i < xf86_num_platform_devices; i++) {
-        if (xf86_platform_devices[i].flags & XF86_PDEV_PAUSED)
+        if (xf86_platform_devices[i]->flags & XF86_PDEV_PAUSED)
             break;
     }
     if (i != xf86_num_platform_devices)
@@ -318,10 +318,10 @@ void systemd_logind_drop_master(void)
     /* Our VT_PROCESS usage guarantees we've already given up the vt */
     info->active = info->vt_active = FALSE;
     for (i = 0; i < xf86_num_platform_devices; i++) {
-        if (xf86_platform_devices[i].flags & XF86_PDEV_SERVER_FD) {
+        if (xf86_platform_devices[i]->flags & XF86_PDEV_SERVER_FD) {
             dbus_int32_t major, minor;
 
-            xf86_platform_devices[i].flags |= XF86_PDEV_PAUSED;
+            xf86_platform_devices[i]->flags |= XF86_PDEV_PAUSED;
             major = xf86_platform_odev_attributes(i)->major;
             minor = xf86_platform_odev_attributes(i)->minor;
             LogMessage(X_INFO, "systemd-logind: drop master for %u:%u\n",
@@ -334,7 +334,7 @@ void systemd_logind_drop_master(void)
 static Bool are_platform_devices_resumed(void) {
     int i;
     for (i = 0; i < xf86_num_platform_devices; i++) {
-        if (xf86_platform_devices[i].flags & XF86_PDEV_PAUSED) {
+        if (xf86_platform_devices[i]->flags & XF86_PDEV_PAUSED) {
             return FALSE;
         }
     }
