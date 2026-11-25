@@ -71,9 +71,9 @@ ProcXIPassiveGrabDevice(ClientPtr client)
     REQUEST_FIXED_SIZE(xXIPassiveGrabDeviceReq,
         ((uint32_t) stuff->mask_len + stuff->num_modifiers) *4);
 
-    if (client->swapped) {
-        SwapLongs((CARD32*)&stuff[1], stuff->num_modifiers + stuff->mask_len);
-    }
+    /* the event mask is a byte array: swap only the modifiers after it */
+    if (client->swapped)
+        SwapLongs((CARD32 *) &stuff[1] + stuff->mask_len, stuff->num_modifiers);
 
     DeviceIntPtr dev, mod_dev;
     xXIPassiveGrabDeviceReply reply = {
